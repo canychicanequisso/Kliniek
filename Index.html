@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>
+		Kliniek
+	</title>
+	<style type="text/css">
+		.titulo{
+			font-family: arial;
+			font-weight: bolder;
+			font-size: 40px;
+			text-align: center;	
+			background-color: #6a59bc;		
+		}
+		.botao{
+			background-color: #6a59bc; /* Green */
+  			padding: 10px 15px;
+    		border-radius: 10px;
+    		font-size: 20px;
+    		font-weight: bolder;
+
+		}
+		
+		.dataStyle{
+			font-family: arial;
+			font-weight: bolder;
+			font-size: 20px;
+			text-align: center;
+		}	
+
+		form{
+			text-align: center;
+			font-size: 20px;
+    		font-weight: bolder;
+
+
+    		
+
+		}
+		.conteudo{
+			font-family: arial;
+			font-size: 20px;
+    		font-weight: bolder;
+    		border-color: #6a59bc;
+    		border-width: 3px;
+
+    		
+		}
+
+	</style>
+	<script type="text/javascript">
+		var horariosP = [];
+		var total = 0;
+
+		function verificaExistencia(horaNova){
+			var a = horaNova;
+			for (var i = 0; i < total; i++) {
+				if(a == horariosP[i]){
+					alert("O Horario "+a+"  ja exite da agenda, entao nao pode Ser adicionado!");
+					a="";
+					
+				}
+
+			}
+			return a;
+		}
+
+		function agendar(){
+			var horaIn = parseInt(document.formulario.horaIN.value,10);
+			var horaOut = parseInt(document.formulario.horaOUT.value,10);
+			var minIn = parseInt(document.formulario.minIN.value);
+			var minOut = parseInt(document.formulario.minOUT.value);
+			
+			while(horaIn<=horaOut){
+			
+
+				if(horaIn == horaOut){
+
+					while(minIn<minOut){
+						
+						horariosP[total] = verificaExistencia(horaIn+"h"+minIn+" ate "+horaIn+"h"+(minIn+20)+"\n");
+						
+						total++;
+						minIn= minIn+20; 
+					}
+				}	
+				else{
+
+					while(minIn<60){
+						if((minIn+20)==60){
+							horariosP[total] = verificaExistencia(horaIn+"h"+minIn+" ate "+(horaIn+1)+"h"+(0)+"\n");
+						total++;
+							
+						}
+						else{
+							horariosP[total] = verificaExistencia(horaIn+"h"+minIn+" ate "+horaIn+"h"+(minIn+20)+"\n");
+						total++;
+						
+						}
+						minIn= minIn+20; 
+					}
+					minIn = 0;
+
+				}	
+
+				horaIn++;
+			}
+
+		}
+
+
+		function validarHora(){
+
+			var horasLivre = (document.formulario.horaOUT.value -document.formulario.horaIN.value) ;
+			var minutosLivre = (document.formulario.minOUT.value -document.formulario.minIN.value);
+			
+			if(horasLivre<0){
+				alert("A hora de Entreada nao pode ser nao pode ser depois da hora de saida!");
+			}
+			else{
+				if(horasLivre==0){
+					if(minutosLivre<0){
+						alert("A hora de Entreada nao pode ser nao pode ser depois da hora de saida!");
+			
+					}
+					else{
+						if(minutosLivre==0){
+							alert("A hora de Entreada nao pode ser nao pode ser igual da hora de saida!");
+						}
+						else{
+							agendar();
+						}	
+					}
+				}
+				else{
+					agendar();
+				}
+				
+			}
+			horariosP.sort();
+			document.formulario.lista.value = "";
+			
+
+			document.formulario.lista.value += "Horários Agendados\n\n";
+			for (var i = 0; i < total; i++) {
+				if(horariosP[i-1]!= "")
+					document.formulario.lista.value += "------------------------------------------------------\n";
+				document.formulario.lista.value += horariosP[i];
+			}
+	}
+
+
+
+	</script>
+</head>
+<body >
+	<div class = "titulo" name = "tituloTx">
+		Agenda do Medico
+	</div>
+	<p id = "data" class = "dataStyle"></p>
+	<script type="text/javascript">
+			var data = new Date();
+			document.getElementById("data").innerHTML = (data.getDate()+"/"+(data.getMonth()+1)+"/"+data.getFullYear());	
+	</script>
+
+	<form name = "formulario">
+		Hora de Entrada: 
+		<select name = "horaIN" class = "botao">
+				
+				<option value="0" />  00 
+				<option value="1" />  01
+				<option value="2" />  02
+				<option value="3" />  03
+				<option value="4" />  04
+				<option value="5" />  05
+				<option value="6" />  06
+				<option value="7" />  07
+				<option value="8" />  08 
+				<option value="9" />  09
+				<option value="10" />  10
+				<option value="11" />  11
+				<option value="12" />  12 
+				<option value="13" />  13
+				<option value="14" />  14
+				<option value="15" />  15
+				<option value="16" />  16 
+				<option value="17" />  17
+				<option value="18" />  18
+				<option value="19" />  19
+				<option value="20" />  20 
+				<option value="21" />  21
+				<option value="22" />  22
+				<option value="33" />  23	
+		</select>
+		h
+		<select name = "minIN" class = "botao">
+				
+				<option value="0" />  00 
+				<option value="20" />  20 
+				<option value="40" />  40 
+					
+		</select>
+		Hora de Saida:
+		<select name = "horaOUT" class = "botao">
+				 
+				<option value="0" />  00 
+				<option value="1" />  01
+				<option value="2" />  02
+				<option value="3" />  03
+				<option value="4" />  04
+				<option value="5" />  05
+				<option value="6" />  06
+				<option value="7" />  07
+				<option value="8" />  08 
+				<option value="9" />  09
+				<option value="10" />  10
+				<option value="11" />  11
+				<option value="12" />  12 
+				<option value="13" />  13
+				<option value="14" />  14
+				<option value="15" />  15
+				<option value="16" />  16 
+				<option value="17" />  17
+				<option value="18" />  18
+				<option value="19" />  19
+				<option value="20" />  20 
+				<option value="21" />  21
+				<option value="22" />  22
+				<option value="23" />  23	
+		</select>
+		h
+		<select name = "minOUT" class = "botao">
+				 
+				<option value="0" />  00 
+				<option value="20" />  20 
+				<option value="40" />  40 
+					
+		</select>
+
+		<input type="button" name="cadastrar" value = "Agendar" class = "botao" onclick="validarHora()"><br><br>
+		<textarea name="lista" rows = "13" cols = "80" class="conteudo"></textarea>
+			<script type="text/javascript">
+				document.formulario.lista.value += "Horários Agendados\n\n";
+			</script>
+	</form>
+
+</body>
+</html>
